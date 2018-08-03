@@ -49,4 +49,14 @@ zip --junk-paths "${ZIP_FILE}" \
 	chrome/manifest.json
 
 
+USER_FILE="${RELEASE_DIR}/${EXT_FILE_NAME}"
+echo "Creating ${USER_FILE}..."
+ln -f "${RELEASE_FILE}" "${USER_FILE}"
+
+
+META_FILE="${RELEASE_DIR}/${EXT_FILE_NAME%%.user.js}.meta.js"
+echo "Creating ${META_FILE}..."
+cat "${USER_FILE}" | head -30 | grep '^// ' > "${META_FILE}"
+
+
 echo "Done."
