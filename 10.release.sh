@@ -2,11 +2,11 @@
 
 . ./00.config.sh
 
-echo "Making directories..."
+echo "===> Making directories..."
 mkdir -p "${SRC_DIR}" "${RELEASE_DIR}"
 
 
-echo "Getting script version..."
+echo "===> Getting script version..."
 SCRIPT="${SRC_DIR}/${EXT_FILE_NAME}"
 if [ ! -f "${SCRIPT}" ]; then
 	echo "Error reading script: ${SCRIPT}"
@@ -20,7 +20,7 @@ fi
 echo "\tversion ${VERSION}"
 
 
-echo "Updating manifest version..."
+echo "===> Updating manifest version..."
 MANIFEST_FILE="chrome/manifest.json"
 if [ ! -f "${MANIFEST_FILE}" ]; then
 	echo "Error reading manifest file: ${MANIFEST_FILE}"
@@ -32,12 +32,12 @@ sed -i.bak -E \
 
 
 RELEASE_FILE="${RELEASE_DIR}/${EXT_NAME}.${VERSION}.user.js"
-echo "Creating ${RELEASE_FILE}..."
+echo "===> Creating ${RELEASE_FILE}..."
 cp "${SCRIPT}" "${RELEASE_FILE}"
 
 
 ZIP_FILE="${RELEASE_DIR}/${EXT_NAME}.${VERSION}.zip"
-echo "Creating ${ZIP_FILE}..."
+echo "===> Creating ${ZIP_FILE}..."
 rm -f "${ZIP_FILE}"
 zip --junk-paths "${ZIP_FILE}" \
 	img/WV-icon128.png \
@@ -50,13 +50,13 @@ zip --junk-paths "${ZIP_FILE}" \
 
 
 USER_FILE="${RELEASE_DIR}/${EXT_FILE_NAME}"
-echo "Creating ${USER_FILE}..."
+echo "===> Creating ${USER_FILE}..."
 ln -f "${RELEASE_FILE}" "${USER_FILE}"
 
 
 META_FILE="${RELEASE_DIR}/${EXT_FILE_NAME%%.user.js}.meta.js"
-echo "Creating ${META_FILE}..."
+echo "===> Creating ${META_FILE}..."
 cat "${USER_FILE}" | head -30 | grep '^// ' > "${META_FILE}"
 
 
-echo "Done."
+echo "===> Done."
