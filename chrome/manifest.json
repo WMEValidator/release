@@ -2,7 +2,7 @@
     "manifest_version": 2,
     "name": "WME Validator",
     "short_name": "Validator",
-    "version": "2018.09.11",
+    "version": "2018.09.12",
     "description": "Validates a map area in Waze Map Editor, highlights issues and generates a very detailed report with wiki references and solutions",
     "homepage_url": "https://www.waze.com/forum/viewtopic.php?t=76488",
     "icons": {
