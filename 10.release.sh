@@ -19,6 +19,23 @@ if [ -z "${VERSION}" ]; then
 fi
 echo "\tversion ${VERSION}"
 
+echo "===> Getting GreasyFork script version..."
+SCRIPT_GF="${SCRIPT%%.user.js}.gf.js"
+if [ ! -f "${SCRIPT_GF}" ]; then
+	echo "Error reading script: ${SCRIPT_GF}"
+	exit 1
+fi
+VERSION_GF=$(cat "${SCRIPT_GF}" | grep "// @version" | head -1 | awk '{print $3}')
+if [ -z "${VERSION_GF}" ]; then
+	echo "Error getting script version"
+	exit 1
+fi
+echo "\tversion ${VERSION}"
+if [ "${VERSION}" != "${VERSION_GF}" ]; then
+	echo "Error matching script versions: ${VERSION} != ${VERSION_GF}"
+	echo "Please update ${SCRIPT_GF}"
+	exit 1
+fi
 
 echo "===> Updating manifest version..."
 MANIFEST_FILE="chrome/manifest.json"
@@ -34,6 +51,10 @@ sed -i.bak -E \
 RELEASE_FILE="${RELEASE_DIR}/${EXT_NAME}.${VERSION}.user.js"
 echo "===> Creating ${RELEASE_FILE}..."
 cp "${SCRIPT}" "${RELEASE_FILE}"
+
+RELEASE_GF_FILE="${RELEASE_DIR}/${EXT_NAME}.${VERSION}.gf.js"
+echo "===> Creating ${RELEASE_GF_FILE}..."
+cp "${SCRIPT_GF}" "${RELEASE_GF_FILE}"
 
 
 ZIP_FILE="${RELEASE_DIR}/${EXT_NAME}.${VERSION}.zip"
@@ -57,6 +78,5 @@ ln -f "${RELEASE_FILE}" "${USER_FILE}"
 META_FILE="${RELEASE_DIR}/${EXT_FILE_NAME%%.user.js}.meta.js"
 echo "===> Creating ${META_FILE}..."
 cat "${USER_FILE}" | head -30 | grep '^// ' > "${META_FILE}"
-
 
 echo "===> Done."
