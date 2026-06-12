@@ -1,5 +1,5 @@
 {
-    "manifest_version": 2,
+    "manifest_version": 3,
     "name": "WME Validator",
     "short_name": "Validator",
     "version": "2026.06.12",
@@ -10,16 +10,30 @@
         "48": "WV-icon48.png",
         "128": "WV-icon128.png"
     },
-    "content_scripts": [ {
-        "matches": [
-            "https://beta.waze.com/*editor*",
-            "https://www.waze.com/*editor*"
-        ],
-        "exclude_matches": [
-            "https://www.waze.com/*user/*editor/*"
-        ],
-        "js": ["bootstrap.user.js"],
-        "run_at": "document_idle"
-    } ],
-    "web_accessible_resources": ["WME_Validator.user.js"]
+    "content_scripts": [
+        {
+            "matches": [
+                "https://beta.waze.com/*editor*",
+                "https://www.waze.com/*editor*"
+            ],
+            "exclude_matches": [
+                "https://www.waze.com/*user/*editor/*"
+            ],
+            "js": [
+                "bootstrap.user.js"
+            ],
+            "run_at": "document_idle"
+        }
+    ],
+    "web_accessible_resources": [
+        {
+            "resources": [
+                "WME_Validator.user.js"
+            ],
+            "matches": [
+                "https://beta.waze.com/*",
+                "https://www.waze.com/*"
+            ]
+        }
+    ]
 }
